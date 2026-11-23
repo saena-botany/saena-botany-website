@@ -1,11 +1,11 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, TouchEvent, useEffect, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
   Check,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
-  CircleCheck,
   Droplets,
   Flower2,
   GraduationCap,
@@ -46,6 +46,35 @@ const qualifications = [
   { level: 'NQF Level 1', title: 'National Certificate: Mixed Farming Systems', id: 'SAQA ID 48971' },
   { level: 'NQF Level 1', title: 'National Certificate: Plant Production', id: 'SAQA ID 48972' },
   { level: 'NQF Level 2', title: 'National Certificate: Plant Production', id: 'SAQA ID 48975' },
+];
+
+const learningPaths = [
+  { number: '01', title: 'Learnerships', text: 'Structured agricultural and horticultural learning programmes that combine theoretical training, practical experience and workplace exposure. These programmes provide learners with an opportunity to develop occupational skills and work towards recognised qualifications.' },
+  { number: '02', title: 'Short Skills Programmes', text: 'Focused, credit-bearing training programmes designed to develop specific agricultural and horticultural competencies. Delivered through practical, facilitator-led learning and tailored to employer and project requirements.' },
+  { number: '03', title: 'Work-Integrated Learning (WIL)', text: 'Practical workplace experience for students studying agriculture, horticulture and related disciplines. Learners gain exposure to real working environments through placements at Saena facilities and external partner organisations.' },
+  { number: '04', title: 'Agro-processing Workshops', text: 'Practical workshops introducing participants to agricultural value addition, product development and processing opportunities. Designed to build practical knowledge and encourage agricultural entrepreneurship.' },
+  { number: '05', title: 'ANAMED Seminars', text: 'Educational seminars exploring medicinal plants, their cultivation, traditional uses and natural product preparation. Delivered in alignment with the relevant ANAMED training arrangements.' },
+];
+
+const facilitySlides = [
+  { title: 'Greenhouse facilities', text: 'Placeholder image for protected growing environments where learners observe and practise plant production.' },
+  { title: 'Eco loo', text: 'Placeholder image for environmentally aware facilities that support responsible, practical learning spaces.' },
+  { title: 'Demonstration gardens', text: 'Placeholder image for outdoor learning spaces where agricultural methods and environmental care can be explored.' },
+  { title: 'Nursery facilities', text: 'Placeholder image for living learning spaces that support propagation, plant care and growth.' },
+];
+
+const approachStages = [
+  { number: '01', title: 'Learn', label: 'Skills Development & Capacity Building', text: 'Acquire relevant knowledge and practical skills through structured learning and training opportunities.' },
+  { number: '02', title: 'Apply', label: 'Practical Learning & Demonstration', text: 'Put knowledge into practice through hands-on experience, workplace exposure and demonstration activities.' },
+  { number: '03', title: 'Restore', label: 'Environmental Action', text: 'Contribute to environmental improvement through restoration, greening, biodiversity and sustainable community initiatives.' },
+  { number: '04', title: 'Empower', label: 'Youth Economic Participation', text: 'Create pathways for young people to access employment, develop enterprises and participate in the green economy.' },
+  { number: '05', title: 'Sustain', label: 'Partnerships & Long-term Impact', text: 'Build lasting impact through collaboration, community participation and sustainable partnerships.' },
+];
+
+const featuredProjects = [
+  { title: '67 Spekboom in 67 Minutes', category: 'Environmental Action / Community Greening', description: "In recognition of Nelson Mandela's legacy and spirit of community service, Saena Botany brought together volunteers from different organisations to plant 67 Spekboom plants in just 67 minutes. The initiative encouraged collective environmental action and demonstrated how communities can work together to make a positive environmental contribution.", image: '/assets/facilities/IMG-20250718-WA0050.jpg', alt: 'Hands planting Spekboom seedlings in soil' },
+  { title: 'Little Falls Pleasure Resort', category: 'Environmental Enhancement / Landscape Transformation', description: 'Saena Botany contributed to the transformation of an underutilised space at Little Falls Pleasure Resort into a more attractive and inviting environment. The project incorporated Spekboom planting and a winter garden, helping to revitalise the space and improve its overall appearance.' },
+  { title: 'Melpark Primary School', category: 'School Greening / Environmental Education', description: 'At Melpark Primary School, Saena Botany transformed a bare outdoor space into an attractive garden environment. The project incorporated Spekboom and distinctive plant species such as Strelitzia. Learners were actively involved in planting activities and learning about plant care and environmental stewardship.' },
 ];
 
 const services = [
@@ -200,7 +229,7 @@ function HomePage() {
     <section className="section section-paper"><div className="container split-grid intro-split"><div className="image-frame tall"><img src={images.learners} alt="Learners tending plants in a greenhouse" /><span className="image-caption">Practical learning, every step of the way</span></div><div><p className="eyebrow">Who we are</p><h2>Where learning takes root.</h2><p className="lead">Saena Botany is a South African Training & Skills Development Organisation focused on practical agricultural learning and sustainable growth.</p><p>We connect classroom-based theory with hands-on experience, giving learners the confidence to understand plant production, mixed farming systems and the everyday work behind a thriving agricultural future.</p><Button href="#/about">Meet Saena Botany</Button></div></div></section>
     <TrainingPreview />
     <FacilitiesSection />
-    <section className="section section-sage"><div className="container split-grid wil-split"><div><p className="eyebrow">Workplace integrated learning</p><h2>Knowledge becomes capability in the field.</h2><p className="lead">Our WIL approach gives learners the opportunity to apply classroom learning in real agricultural environments.</p><p>Work Integrated Learning takes place at Saena Botany’s own agricultural facilities and at external workplaces where required. It is a practical bridge between qualification and opportunity.</p><Button href="#/training">Understand our approach</Button></div><div className="quote-card"><CircleCheck size={32} /><p>“Learning is more powerful when people can see, practise and reflect on what they are learning.”</p><span>Saena Botany learning approach</span></div></div></section>
+    <ApproachSection />
     <ServicesPreview />
     <ProjectsPreview />
     <ProductsPreview />
@@ -211,12 +240,28 @@ function HomePage() {
 }
 
 function TrainingPreview() {
-  return <section className="section section-dark"><div className="container"><div className="section-heading split-heading"><div><p className="eyebrow light-eyebrow">Training & Skills Development</p><h2>Build a future with practical skills.</h2></div><p>Accredited agricultural qualifications, taught through a balance of theory, practice and workplace exposure.</p></div><div className="qualification-grid">{qualifications.map((qualification, index) => <div className={`qualification-card ${index === 1 ? 'featured' : ''}`} key={qualification.id}><span>{qualification.level}</span><h3>{qualification.title}</h3><p>{qualification.id}</p><a href="#/training">View qualification <ArrowUpRight size={16} /></a></div>)}</div><div className="section-action"><Button href="#/training" variant="light">View all training information</Button></div></div></section>;
+  return <section className="section section-dark"><div className="container"><div className="section-heading split-heading"><div><p className="eyebrow light-eyebrow">Training & Skills Development</p><h2>Build a future with practical skills.</h2></div><p>Learning pathways that combine structured theory, practical experience and workplace exposure.</p></div><div className="qualification-grid training-path-grid">{learningPaths.map((path) => <div className="qualification-card learning-path-card" key={path.number}><span>{path.number}</span><h3>{path.title}</h3><p>{path.text}</p></div>)}</div><div className="section-action"><Button href="#/training" variant="light">View all training information</Button></div></div></section>;
 }
 
 function FacilitiesSection() {
-  const facilities = [{ title: 'Greenhouses', icon: Sprout, text: 'Protected growing environments where learners can observe and practise plant production.' }, { title: 'Eco bathrooms', icon: Leaf, text: 'Thoughtful facilities that reflect our commitment to responsible, practical spaces.' }, { title: 'Demonstration spaces', icon: GraduationCap, text: 'Purposeful areas for seeing agricultural methods in action.' }, { title: 'Nurseries', icon: TreePine, text: 'Living learning spaces for propagation, plant care and growth.' }];
-  return <section className="section"><div className="container"><SectionHeading eyebrow="Our facilities" title="Learning environments with life in them." text="Our facilities bring practical agricultural learning to life, giving learners space to observe, practise and build confidence." /><div className="facility-layout"><div className="facility-image"><img src={images.greenhouse} alt="Rows of plants in a greenhouse" /><div className="image-badge">Practical by design</div></div><div className="facility-list">{facilities.map(({ title, icon: Icon, text }) => <div className="facility-item" key={title}><div className="icon-box"><Icon size={22} /></div><div><h3>{title}</h3><p>{text}</p></div><ChevronRight size={18} /></div>)}</div></div></div></section>;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const facilities = [{ title: 'Greenhouses', icon: Sprout, text: 'Protected growing environments where learners can observe plant production, practise growing techniques and build confidence in a structured agricultural setting.' }, { title: 'Eco bathrooms', icon: Leaf, text: 'Environmentally aware facilities that help learners connect everyday infrastructure with responsible resource use and practical sustainability.' }, { title: 'Demonstration spaces', icon: GraduationCap, text: 'Purposeful spaces where agricultural methods, environmental care and practical skills can be seen, discussed and applied.' }, { title: 'Nurseries', icon: TreePine, text: 'Living learning spaces for propagation, plant care and growth, supporting the observation and repetition that practical skills require.' }];
+  const moveCarousel = (direction: number) => setActiveIndex((current) => (current + direction + facilitySlides.length) % facilitySlides.length);
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const start = touchStartX;
+    setTouchStartX(null);
+    if (start === null) return;
+    const distance = event.changedTouches[0].clientX - start;
+    if (Math.abs(distance) > 40) moveCarousel(distance > 0 ? -1 : 1);
+  };
+  const activeSlide = facilitySlides[activeIndex];
+
+  return <section className="section"><div className="container"><SectionHeading eyebrow="Our facilities" title="Learning environments with life in them." text="Our facilities bring practical agricultural learning to life, giving learners space to observe, practise and build confidence." /><div className="facility-layout"><div className="facility-image facility-carousel" onTouchStart={(event) => setTouchStartX(event.changedTouches[0].clientX)} onTouchEnd={handleTouchEnd}><div className="facility-placeholder" aria-live="polite"><div><span className="facility-placeholder-label">Facility image placeholder</span><strong>{activeSlide.title}</strong><p>{activeSlide.text}</p></div></div><button className="carousel-button carousel-prev" type="button" aria-label="Previous facility image" onClick={() => moveCarousel(-1)}><ChevronLeft size={20} /></button><button className="carousel-button carousel-next" type="button" aria-label="Next facility image" onClick={() => moveCarousel(1)}><ChevronRight size={20} /></button><div className="image-badge">Practical by design</div><div className="carousel-dots" aria-label="Facility images">{facilitySlides.map((slide, index) => <button className={index === activeIndex ? 'active' : ''} type="button" key={slide.title} aria-label={`Show ${slide.title}`} aria-current={index === activeIndex} onClick={() => setActiveIndex(index)} />)}</div></div><div className="facility-list">{facilities.map(({ title, icon: Icon, text }) => <div className="facility-item" key={title}><div className="icon-box"><Icon size={22} /></div><div><h3>{title}</h3><p>{text}</p></div></div>)}</div></div></div></section>;
+}
+
+function ApproachSection() {
+  return <section className="section section-sage"><div className="container"><div className="section-heading approach-heading"><p className="eyebrow">Our approach</p><h2>Growing People. Greening Communities. Sustaining the Future.</h2><p className="lead">Saena Botany follows an integrated, community-driven approach that combines skills development, practical experience, environmental stewardship and economic empowerment.</p><p>We believe that meaningful environmental transformation begins with investing in people. Through learning, practical application and environmental action, we create opportunities for young people to develop skills, contribute to their communities and participate in the green economy.</p></div><div className="approach-stages">{approachStages.map((stage) => <div className="approach-stage" key={stage.number}><span>{stage.number}</span><h3>{stage.title}</h3><strong>{stage.label}</strong><p>{stage.text}</p></div>)}</div><div className="section-action"><Button href="#/about">Discover Our Approach</Button></div></div></section>;
 }
 
 function ServicesPreview() {
@@ -224,7 +269,11 @@ function ServicesPreview() {
 }
 
 function ProjectsPreview() {
-  return <section className="section"><div className="container"><SectionHeading eyebrow="Featured projects" title="A portfolio waiting to tell its story." text="This first collection is ready for your authentic project photography and descriptions." /><div className="project-grid"><ProjectCard large title="Project showcase placeholder" image={images.landscape} /><ProjectCard title="Green space placeholder" image={images.greenhouse} /><ProjectCard title="Practical growing placeholder" image={images.learners} /></div><div className="center-action"><Button href="#/projects" variant="outline">View project portfolio</Button></div></div></section>;
+  return <section className="section"><div className="container"><SectionHeading eyebrow="Featured projects" title="Growing change through shared action." text="Three examples of Saena Botany’s environmental, educational and community-focused work." /><div className="project-grid home-project-grid"><HomeProjectCard large project={featuredProjects[0]} /><HomeProjectCard project={featuredProjects[1]} /><HomeProjectCard project={featuredProjects[2]} /></div><div className="center-action"><Button href="#/projects" variant="outline">View project portfolio</Button></div></div></section>;
+}
+
+function HomeProjectCard({ project, large = false }: { project: typeof featuredProjects[number]; large?: boolean }) {
+  return <a href="#/projects" className={`project-card home-project-card ${large ? 'large' : ''} ${project.image ? '' : 'is-placeholder'}`}>{project.image ? <img src={project.image} alt={project.alt} /> : <div className="project-placeholder"><span>Project photography coming soon</span></div>}<div className="project-overlay"><span>{project.category}</span><h3>{project.title}</h3><p>{project.description}</p><ArrowUpRight size={20} /></div></a>;
 }
 
 function ProjectCard({ title, image, large = false }: { title: string; image: string; large?: boolean }) {
@@ -240,7 +289,7 @@ function ProductCard({ product }: { product: typeof products[number] }) {
 }
 
 function WhyChoose() {
-  const reasons = [{ icon: GraduationCap, title: 'Accredited learning', text: 'Training aligned with AgriSETA-accredited agricultural qualifications.' }, { icon: Users, title: 'Practical support', text: 'A learning approach that makes space for theory, practice and workplace exposure.' }, { icon: Sprout, title: 'A culture of growth', text: 'A grounded environment for learners, aspiring farmers and agricultural workers.' }];
+  const reasons = [{ icon: GraduationCap, title: 'AgriSETA Accredited', text: 'Saena Botany is an AgriSETA-accredited training provider delivering agricultural learning aligned with recognised qualifications.' }, { icon: Users, title: 'AgriSETA Workplace Approved', text: 'Our approved workplace environment supports practical learning, structured experience and workplace-based training at Saena Botany’s facilities.' }, { icon: Sprout, title: '8+ Years of Experience', text: 'More than eight years of experience in training, practical skills development and environmental initiatives.' }];
   return <section className="section section-dark"><div className="container"><SectionHeading eyebrow="Why choose Saena Botany" title="A credible place to begin." text="We believe opportunity grows when knowledge, practice and purpose come together." align="center" /><div className="reason-grid">{reasons.map(({ icon: Icon, title, text }) => <div key={title}><Icon size={28} /><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>;
 }
 

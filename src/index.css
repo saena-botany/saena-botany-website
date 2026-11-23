@@ -96,26 +96,52 @@ p { color: var(--muted); line-height: 1.65; }
 .accreditation-card h3 { max-width: 300px; font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 500; }
 .accreditation-mark, .success-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--lime); color: var(--forest); margin-bottom: 28px; }
 .qualification-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.training-path-grid { grid-template-columns: repeat(6, 1fr); }
 .qualification-card { display: flex; flex-direction: column; min-height: 280px; padding: 27px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); transition: transform .2s ease, background .2s ease; }
 .qualification-card:hover, .qualification-card.featured { background: #284b39; transform: translateY(-4px); }
 .qualification-card > span { color: var(--lime); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .qualification-card h3 { margin: 28px 0 12px; color: var(--white); font-family: 'Playfair Display', serif; font-size: 25px; font-weight: 500; }
 .qualification-card p { margin-bottom: auto; font-size: 13px; }
 .qualification-card a { display: flex; align-items: center; gap: 7px; margin-top: 25px; color: var(--lime); font-size: 12px; font-weight: 700; }
+.learning-path-card { grid-column: span 2; min-height: 340px; }
+.learning-path-card:nth-child(4) { grid-column: 2 / span 2; }
+.learning-path-card:nth-child(5) { grid-column: 4 / span 2; }
 .section-action { margin-top: 35px; text-align: center; }
 .facility-layout { display: grid; grid-template-columns: 1.1fr .9fr; gap: 22px; align-items: stretch; }
 .facility-image { position: relative; min-height: 520px; overflow: hidden; }
+.facility-carousel { touch-action: pan-y; }
+.facility-placeholder { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 520px; padding: 55px; background: linear-gradient(135deg, #17392c, #627b59 58%, #9aa98e); color: var(--white); text-align: center; }
+.facility-placeholder > div { max-width: 360px; }
+.facility-placeholder-label { display: block; margin-bottom: 18px; color: var(--lime); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+.facility-placeholder strong { display: block; margin-bottom: 15px; font-family: 'Playfair Display', serif; font-size: clamp(30px, 4vw, 48px); font-weight: 500; line-height: 1.1; }
+.facility-placeholder p { margin: 0; color: #dce7d8; font-size: 13px; }
 .facility-image img { width: 100%; height: 100%; object-fit: cover; }
+.carousel-button { position: absolute; top: 50%; z-index: 2; display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 0; background: var(--white); color: var(--forest); transform: translateY(-50%); transition: background .2s ease, color .2s ease; }
+.carousel-button:hover { background: var(--lime); }
+.carousel-prev { left: 18px; }
+.carousel-next { right: 18px; }
+.carousel-dots { position: absolute; right: 18px; bottom: 18px; z-index: 2; display: flex; gap: 7px; }
+.carousel-dots button { width: 7px; height: 7px; padding: 0; border: 1px solid var(--white); border-radius: 50%; background: transparent; }
+.carousel-dots button.active { background: var(--lime); border-color: var(--lime); }
 .facility-list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-.facility-item { display: flex; align-items: center; gap: 17px; flex: 1; padding: 20px 0 20px 22px; border-bottom: 1px solid var(--line); }
+.facility-item { display: flex; align-items: flex-start; gap: 17px; flex: 1; padding: 20px 0 20px 22px; border-bottom: 1px solid var(--line); }
 .facility-item > div:nth-child(2) { flex: 1; }
 .facility-item h3 { margin-bottom: 6px; color: var(--forest); font-size: 17px; }
-.facility-item p { margin: 0; font-size: 13px; line-height: 1.45; }
-.icon-box { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--sage); color: var(--forest); }
+.facility-item p { margin: 0; font-size: 13px; line-height: 1.5; }
+.icon-box { display: flex; align-items: center; justify-content: center; flex: 0 0 45px; width: 45px; height: 45px; background: var(--sage); color: var(--forest); }
 .quote-card { padding: 42px; background: var(--forest); }
 .quote-card svg { color: var(--lime); }
 .quote-card p { margin: 28px 0; color: var(--white); font-family: 'Playfair Display', serif; font-size: 30px; line-height: 1.25; }
 .quote-card span { color: var(--lime); font-size: 12px; font-weight: 700; }
+.approach-heading { max-width: 850px; }
+.approach-heading > p:not(.eyebrow) { max-width: 760px; }
+.approach-stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.approach-stage { position: relative; padding: 25px 20px; background: rgba(255,255,255,.58); border: 1px solid rgba(23,57,44,.12); }
+.approach-stage:not(:last-child)::after { content: ''; position: absolute; top: 31px; right: -17px; width: 16px; border-top: 1px solid rgba(23,57,44,.3); }
+.approach-stage > span { color: var(--moss); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.approach-stage h3 { margin: 25px 0 9px; color: var(--forest); font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; }
+.approach-stage strong { display: block; min-height: 38px; color: var(--forest); font-size: 11px; line-height: 1.35; text-transform: uppercase; letter-spacing: .06em; }
+.approach-stage p { margin: 19px 0 0; font-size: 12px; line-height: 1.55; }
 .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .service-grid-wide { grid-template-columns: repeat(3, 1fr); }
 .service-card { min-height: 260px; padding: 29px; background: var(--white); border: 1px solid var(--line); transition: transform .2s ease, box-shadow .2s ease; }
@@ -133,6 +159,13 @@ p { color: var(--muted); line-height: 1.65; }
 .project-overlay span { color: var(--lime); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 .project-overlay h3 { max-width: 360px; margin: 8px 0 0; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 500; }
 .project-overlay svg { position: absolute; right: 22px; bottom: 24px; color: var(--lime); }
+.home-project-grid { grid-template-rows: minmax(350px, auto) minmax(350px, auto); }
+.home-project-card { min-height: 350px; }
+.home-project-card .project-overlay { padding: 24px; }
+.home-project-card .project-overlay h3 { max-width: calc(100% - 30px); font-size: 21px; }
+.home-project-card .project-overlay p { max-width: 490px; margin: 12px 0 0; color: #dce7d8; font-size: 12px; line-height: 1.45; }
+.project-placeholder { display: flex; align-items: center; justify-content: center; height: 100%; padding: 30px; background: linear-gradient(135deg, #294b3a, #627b59); color: #dce7d8; text-align: center; }
+.project-placeholder span { color: var(--lime); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .center-action { margin-top: 35px; text-align: center; }
 .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .product-grid-page { grid-template-columns: repeat(3, 1fr); }
@@ -232,6 +265,12 @@ p { color: var(--muted); line-height: 1.65; }
   .hero::after { background: linear-gradient(90deg, rgba(16,41,31,.98), rgba(16,41,31,.65)); }
   .hero-note { display: none; }
   .split-grid, .page-intro-grid, .contact-layout, .faq-layout, .learner-grid { grid-template-columns: 1fr; gap: 48px; }
+  .training-path-grid { grid-template-columns: repeat(2, 1fr); }
+  .learning-path-card, .learning-path-card:nth-child(4), .learning-path-card:nth-child(5) { grid-column: auto; }
+  .approach-stages { grid-template-columns: repeat(2, 1fr); }
+  .approach-stage:not(:last-child)::after { display: none; }
+  .home-project-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, minmax(330px, auto)); }
+  .home-project-card.large { grid-row: span 1; }
   .page-intro-grid { gap: 30px; }
   .page-intro-grid img { height: 280px; }
   .facility-layout { grid-template-columns: 1fr; }
@@ -260,8 +299,12 @@ p { color: var(--muted); line-height: 1.65; }
   .section-heading { margin-bottom: 32px; }
   .image-frame.tall { min-height: 390px; }
   .qualification-grid, .service-grid, .service-grid-wide, .product-grid, .product-grid-page, .reason-grid { grid-template-columns: 1fr; }
-  .qualification-card { min-height: 250px; }
-  .facility-image { min-height: 280px; }
+  .qualification-card, .qualification-card.learning-path-card { min-height: 250px; }
+  .facility-image, .facility-placeholder { min-height: 280px; }
+  .facility-placeholder { padding: 35px; }
+  .facility-placeholder strong { font-size: 32px; }
+  .approach-stages { grid-template-columns: 1fr; }
+  .home-project-grid { grid-template-rows: repeat(3, minmax(340px, auto)); }
   .facility-item { padding-left: 0; }
   .quote-card { padding: 28px; }
   .quote-card p { font-size: 26px; }
