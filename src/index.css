@@ -139,6 +139,19 @@ p { color: var(--muted); line-height: 1.65; }
 .approach-stage h3 { margin: 25px 0 9px; color: var(--forest); font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 500; }
 .approach-stage strong { display: block; min-height: 38px; color: var(--forest); font-size: 11px; line-height: 1.35; text-transform: uppercase; letter-spacing: .06em; }
 .approach-stage p { margin: 19px 0 0; font-size: 12px; line-height: 1.55; }
+.focus-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.focus-card { padding: 27px 22px; background: var(--white); border: 1px solid var(--line); transition: transform .2s ease, box-shadow .2s ease; }
+.focus-card:hover { transform: translateY(-5px); box-shadow: 0 15px 34px rgba(23,57,44,.09); }
+.focus-card > span { display: block; color: var(--moss); font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.focus-card > svg { display: block; margin: 22px 0 0; color: var(--forest); }
+.focus-card h3 { margin: 14px 0 10px; color: var(--forest); font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 500; }
+.focus-card p { margin: 0; font-size: 12.5px; line-height: 1.55; }
+.core-values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.core-value-card { padding: 30px 26px; background: var(--white); border: 1px solid var(--line); transition: transform .2s ease, box-shadow .2s ease; }
+.core-value-card:hover { transform: translateY(-5px); box-shadow: 0 15px 34px rgba(23,57,44,.09); }
+.core-value-icon { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; background: var(--sage); color: var(--forest); }
+.core-value-card h3 { margin: 20px 0 9px; color: var(--forest); font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 500; }
+.core-value-card p { margin: 0; font-size: 13px; }
 .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .service-grid-wide { grid-template-columns: repeat(3, 1fr); }
 .service-card { min-height: 260px; padding: 29px; background: var(--white); border: 1px solid var(--line); transition: transform .2s ease, box-shadow .2s ease; }
@@ -266,6 +279,8 @@ p { color: var(--muted); line-height: 1.65; }
   .learning-path-card, .learning-path-card:nth-child(4), .learning-path-card:nth-child(5) { grid-column: auto; }
   .approach-stages { grid-template-columns: repeat(2, 1fr); }
   .approach-stage:not(:last-child)::after { display: none; }
+  .focus-grid { grid-template-columns: repeat(2, 1fr); }
+  .core-values-grid { grid-template-columns: repeat(2, 1fr); }
   .home-project-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, minmax(330px, auto)); }
   .home-project-card.large { grid-row: span 1; }
   .page-intro-grid { gap: 30px; }
@@ -297,6 +312,7 @@ p { color: var(--muted); line-height: 1.65; }
   .section-heading { margin-bottom: 32px; }
   .image-frame.tall { min-height: 390px; }
   .qualification-grid, .service-grid, .service-grid-wide, .product-grid, .product-grid-page, .reason-grid { grid-template-columns: 1fr; }
+  .focus-grid, .core-values-grid { grid-template-columns: 1fr; }
   .qualification-card, .qualification-card.learning-path-card { min-height: 250px; }
   .facility-image { min-height: 280px; }
   .approach-stages { grid-template-columns: 1fr; }
