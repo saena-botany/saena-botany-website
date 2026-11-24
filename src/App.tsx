@@ -233,7 +233,7 @@ function SectionHeading({ eyebrow, title, text, align = 'left' }: { eyebrow: str
 }
 
 function StatStrip() {
-  return <div className="stat-strip"><div><strong>Accredited Qualifications</strong><span>Currently offered across Saena’s accredited training scope.</span></div><div><strong>NQF Levels 1–3</strong><span>Horticulture and related learning pathways.</span></div><div><strong>AgriSETA Workplace Approved</strong><span>Practical workplace learning and training environment.</span></div></div>;
+  return <div className="stat-strip"><div><strong>Accredited Qualifications</strong><span>Recognised learning programmes within Saena’s accredited training scope.</span></div><div><strong>International Recognition</strong><span>Part of the ANAMED network, connecting our training to an international community.</span></div><div><strong>AgriSETA Workplace Approved</strong><span>Practical workplace learning and training environment.</span></div></div>;
 }
 
 function HomePage() {
