@@ -2,18 +2,21 @@ import { FormEvent, TouchEvent, useEffect, useState } from 'react';
 import {
   ArrowRight,
   ArrowUpRight,
+  BookOpen,
   Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Droplets,
-  Flower2,
+  Globe2,
   GraduationCap,
+  Handshake,
+  HeartHandshake,
   Leaf,
+  Lightbulb,
   Menu,
   MessageCircle,
-  Mountain,
   Phone,
+  ShieldCheck,
   Sprout,
   TreePine,
   Users,
@@ -21,7 +24,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-type Route = 'home' | 'about' | 'training' | 'services' | 'projects' | 'products' | 'contact';
+type Route = 'home' | 'about' | 'training' | 'projects' | 'products' | 'contact';
 type EnquiryType = 'training' | 'landscaping' | 'general';
 
 const images = {
@@ -42,7 +45,6 @@ const navItems = [
   { label: 'Home', route: 'home' as Route },
   { label: 'About Us', route: 'about' as Route },
   { label: 'Training & Skills', route: 'training' as Route, dropdown: ['Qualifications', 'Our approach', 'Workplace learning', 'Entry requirements'] },
-  { label: 'Services', route: 'services' as Route, dropdown: ['Design & planning', 'Installation', 'Maintenance', 'Irrigation'] },
   { label: 'Projects', route: 'projects' as Route },
   { label: 'Products', route: 'products' as Route, dropdown: ['Greenhouse plants', 'Botanical products', 'Spekboom teas'] },
   { label: 'Contact', route: 'contact' as Route },
@@ -77,19 +79,27 @@ const approachStages = [
   { number: '05', title: 'Sustain', label: 'Partnerships & Long-term Impact', text: 'Build lasting impact through collaboration, community participation and sustainable partnerships.' },
 ];
 
+const focusAreas = [
+  { number: '01', icon: GraduationCap, title: 'Skills Development and Youth Empowerment', text: 'Accredited horticultural and environmental training, workplace experience, mentorship and youth enterprise development.' },
+  { number: '02', icon: Leaf, title: 'Environmental Conservation & Biodiversity', text: 'Biodiversity protection, invasive alien plant management, indigenous planting and ecological restoration.' },
+  { number: '03', icon: Sprout, title: 'Sustainable Agriculture & Food Security', text: 'Edible landscapes, urban agriculture, community gardens and sustainable food production.' },
+  { number: '04', icon: TreePine, title: 'Community Greening & Climate Resilience', text: 'Public open space rehabilitation, school greening, climate awareness and community environmental campaigns.' },
+  { number: '05', icon: BookOpen, title: 'Research, Demonstration & Knowledge Sharing', text: 'Practical learning through demonstration gardens, workshops, environmental education and industry partnerships.' },
+];
+
+const coreValues = [
+  { icon: HeartHandshake, title: 'Empowerment', text: 'Equipping young people with skills, knowledge and opportunities for economic independence.' },
+  { icon: Globe2, title: 'Sustainability', text: 'Promoting practices that protect natural resources and support future generations.' },
+  { icon: Lightbulb, title: 'Innovation', text: 'Introducing icreative environmental and horticultural solutions.' },
+  { icon: ShieldCheck, title: 'Integrity', text: 'Upholding professionalism, accountability and quality in every project.' },
+  { icon: Handshake, title: 'Collaboration', text: 'Building meaningful partnerships between government, private sector and communities.' },
+  { icon: Sprout, title: 'Stewardship', text: 'Taking responsibility for protecting, restoring and nurturing our natural environment.' },
+];
+
 const featuredProjects = [
   { title: '67 Spekboom in 67 Minutes', category: 'Environmental Action / Community Greening', description: "In recognition of Nelson Mandela's legacy and spirit of community service, Saena Botany brought together volunteers from different organisations to plant 67 Spekboom plants in just 67 minutes. The initiative encouraged collective environmental action and demonstrated how communities can work together to make a positive environmental contribution.", image: '/assets/facilities/IMG-20250718-WA0050.jpg', alt: 'Hands planting Spekboom seedlings in soil' },
   { title: 'Little Falls Pleasure Resort', category: 'Environmental Enhancement / Landscape Transformation', description: 'Saena Botany contributed to the transformation of an underutilised space at Little Falls Pleasure Resort into a more attractive and inviting environment. The project incorporated Spekboom planting and a winter garden, helping to revitalise the space and improve its overall appearance.' },
   { title: 'Melpark Primary School', category: 'School Greening / Environmental Education', description: 'At Melpark Primary School, Saena Botany transformed a bare outdoor space into an attractive garden environment. The project incorporated Spekboom and distinctive plant species such as Strelitzia. Learners were actively involved in planting activities and learning about plant care and environmental stewardship.' },
-];
-
-const services = [
-  { icon: Flower2, title: 'Garden design & planning', text: 'Thoughtful garden plans shaped around your space, lifestyle and planting vision.' },
-  { icon: Sprout, title: 'Garden installation', text: 'From preparation to planting, we develop gardens with care and purpose.' },
-  { icon: TreePine, title: 'Garden maintenance', text: 'Regular, reliable care that keeps established gardens healthy and inviting.' },
-  { icon: Leaf, title: 'Planting & establishment', text: 'Plant selection and establishment for gardens that grow with confidence.' },
-  { icon: Mountain, title: 'Lawn establishment', text: 'Lawn preparation, establishment and ongoing maintenance for usable green spaces.' },
-  { icon: Droplets, title: 'Irrigation', text: 'Installation and maintenance of practical irrigation systems for healthier landscapes.' },
 ];
 
 const products = [
@@ -103,7 +113,7 @@ const products = [
 
 function pathToRoute(): Route {
   const path = window.location.hash.replace(/^#\/?/, '').split('/')[0];
-  return (['home', 'about', 'training', 'services', 'projects', 'products', 'contact'] as Route[]).includes(path as Route)
+  return (['home', 'about', 'training', 'projects', 'products', 'contact'] as Route[]).includes(path as Route)
     ? path as Route
     : 'home';
 }
@@ -125,10 +135,9 @@ function App() {
 
   useEffect(() => {
     const titles: Record<Route, string> = {
-      home: 'Saena Botany | Training, Skills Development & Landscaping',
-      about: 'About Saena Botany | Agricultural Skills Development',
+      home: 'Saena Botany | Training, Skills Development & Horticulture',
+      about: 'About Saena Botany | Horticulture & Environmental Development',
       training: 'Training & Skills Development | Saena Botany',
-      services: 'Landscaping Services | Saena Botany',
       projects: 'Projects | Saena Botany',
       products: 'Botanical Products | Saena Botany',
       contact: 'Contact Saena Botany | Training & Enquiries',
@@ -144,7 +153,6 @@ function App() {
         {route === 'home' && <HomePage />}
         {route === 'about' && <AboutPage />}
         {route === 'training' && <TrainingPage />}
-        {route === 'services' && <ServicesPage />}
         {route === 'projects' && <ProjectsPage />}
         {route === 'products' && <ProductsPage />}
         {route === 'contact' && <ContactPage />}
@@ -204,7 +212,7 @@ function Footer() {
           <img src="/SB_-Final_Logo_1.png" alt="Saena Botany" />
           <p>Creating a path through practical agricultural learning, sustainable growing and thoughtful landscapes.</p>
         </div>
-        <div><p className="footer-label">Explore</p><a href="#/training">Training & Skills</a><a href="#/services">Landscaping Services</a><a href="#/projects">Projects</a><a href="#/products">Products</a></div>
+        <div><p className="footer-label">Explore</p><a href="#/training">Training & Skills</a><a href="#/projects">Projects</a><a href="#/products">Products</a></div>
         <div><p className="footer-label">Contact</p><a href="tel:+27746301432">074 630 1432</a><a href="mailto:projects@saenabotany.co.za">projects@saenabotany.co.za</a><a href="#/contact">Send an enquiry</a></div>
       </div>
       <div className="container footer-bottom"><span>© {new Date().getFullYear()} Saena Botany (Pty) Ltd</span><span>Training • Growth • Opportunity</span></div>
@@ -234,8 +242,8 @@ function HomePage() {
     <div className="container"><StatStrip /></div>
     <section className="section section-paper"><div className="container split-grid intro-split"><div className="image-frame tall"><img src={images.whoWeAre} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = images.whoWeAreFallback; }} alt="Saena Botany demonstration garden" /><span className="image-caption">Practical learning, every step of the way</span></div><div><p className="eyebrow">Who we are</p><h2>Where learning takes root.</h2><p className="lead">Saena Botany is a South African youth-focused environmental and horticultural social enterprise dedicated to growing people, restoring environments and building sustainable communities. Through accredited training, practical learning, environmental initiatives and strategic partnerships, Saena creates pathways for youth empowerment while advancing biodiversity conservation, climate resilience and sustainable livelihoods.</p><Button href="#/about">Meet Saena Botany</Button></div></div></section>
     <TrainingPreview />
+    <FocusAreasSection />
     <FacilitiesSection />
-    <ApproachSection />
     <ProjectsPreview />
     <ProductsPreview />
     <WhyChoose />
@@ -246,6 +254,10 @@ function HomePage() {
 
 function TrainingPreview() {
   return <section className="section section-dark"><div className="container"><div className="section-heading split-heading"><div><p className="eyebrow light-eyebrow">Training & Skills Development</p><h2>Build a future with practical skills.</h2></div><p>Learning pathways that combine structured theory, practical experience and workplace exposure.</p></div><div className="qualification-grid training-path-grid">{learningPaths.map((path) => <div className="qualification-card learning-path-card" key={path.number}><span>{path.number}</span><h3>{path.title}</h3><p>{path.text}</p></div>)}</div><div className="section-action"><Button href="#/training" variant="light">View all training information</Button></div></div></section>;
+}
+
+function FocusAreasSection() {
+  return <section className="section section-paper focus-section"><div className="container"><SectionHeading eyebrow="Our strategic priorities" title="Our Strategic Focus Areas" text="Our work is shaped by connected priorities that grow people, strengthen communities and care for the environment." /><div className="focus-grid">{focusAreas.map(({ number, icon: Icon, title, text }) => <article className="focus-card" key={number}><span>{number}</span><Icon size={26} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>;
 }
 
 function FacilitiesSection() {
@@ -266,7 +278,7 @@ function FacilitiesSection() {
 }
 
 function ApproachSection() {
-  return <section className="section section-sage"><div className="container"><div className="section-heading approach-heading"><p className="eyebrow">Our approach</p><h2>Growing People. Greening Communities. Sustaining the Future.</h2><p className="lead">Saena Botany follows an integrated, community-driven approach that combines skills development, practical experience, environmental stewardship and economic empowerment.</p><p>We believe that meaningful environmental transformation begins with investing in people. Through learning, practical application and environmental action, we create opportunities for young people to develop skills, contribute to their communities and participate in the green economy.</p></div><div className="approach-stages">{approachStages.map((stage) => <div className="approach-stage" key={stage.number}><span>{stage.number}</span><h3>{stage.title}</h3><strong>{stage.label}</strong><p>{stage.text}</p></div>)}</div><div className="section-action"><Button href="#/about">Discover Our Approach</Button></div></div></section>;
+  return <section className="section section-sage"><div className="container"><div className="section-heading approach-heading"><p className="eyebrow">Our approach</p><h2>Growing People. Greening Communities. Sustaining the Future.</h2><p className="lead">Saena Botany follows an integrated, community-driven approach that combines skills development, practical experience, environmental stewardship and economic empowerment.</p><p>We believe that meaningful environmental transformation begins with investing in people. Through learning, practical application and environmental action, we create opportunities for young people to develop skills, contribute to their communities and participate in the green economy.</p></div><div className="approach-stages">{approachStages.map((stage) => <div className="approach-stage" key={stage.number}><span>{stage.number}</span><h3>{stage.title}</h3><strong>{stage.label}</strong><p>{stage.text}</p></div>)}</div></div></section>;
 }
 
 function ProjectsPreview() {
@@ -310,7 +322,7 @@ function ContactCta() {
 }
 
 function AboutPage() {
-  return <><PageIntro eyebrow="About Saena Botany" title="Growing people, places and possibility." text="A South African organisation bringing practical agricultural learning and purposeful landscaping together." image={images.hero} /><section className="section"><div className="container narrow-copy"><p className="eyebrow">Our background</p><h2>Youth owned , Led by Veterans...</h2><p className="lead">Saena Botany exists to create a path for people who want to learn, work and grow through horticulture.</p><p>Founded on the belief that skills development and environmental stewardship can become powerful drivers of socio-economic transformation . Saena Botany integrates horticulture,environmental conservation,sustainable agriculture and enterprise development to address the growing need for a skilled , environmentally conscious and economically active generation.</p></div></section><section className="section section-sage"><div className="container values-grid"><div><p className="eyebrow">Our commitement</p><h2>We recognise that environmental sustainability cannot be achieved without investing in people.</h2><p>Saena Botany seeks to create sustainable livelihoods,restore natural environments and cultivate environmentally conscious communities.</p></div><div><p className="eyebrow">Our vision</p><h2>To be a leading catalyst for environmental transformation and sustainable community development.</h2><p>We see horticulture as a pathway to opportunity, enterprise and sustainable communities.</p></div></div></section><section className="section"><div className="container split-grid approach-grid"><div className="image-frame"><img src={images.learners} alt="People working with plants in a greenhouse" /></div><div><p className="eyebrow">Our Leadership & Experience</p><h2>Grounded in more than two decades of experience in the horticulture and green industry.</h2><p>The organisation founder and projects manager boast  22 years of industry experience and qualifications in ornamental horticulture and the broader green industry. She brings extensive experience in horticultural training,skill development,industry engagement and youth empowerment.
+  return <><PageIntro eyebrow="About Saena Botany" title="Growing people, places and possibility." text="A South African organisation bringing practical agricultural learning and purposeful landscaping together." image={images.hero} /><section className="section"><div className="container narrow-copy"><p className="eyebrow">Our background</p><h2>Youth owned , Led by Veterans...</h2><p className="lead">Saena Botany exists to create a path for people who want to learn, work and grow through horticulture.</p><p>Founded on the belief that skills development and environmental stewardship can become powerful drivers of socio-economic transformation . Saena Botany integrates horticulture,environmental conservation,sustainable agriculture and enterprise development to address the growing need for a skilled , environmentally conscious and economically active generation.</p></div></section><section className="section section-sage"><div className="container values-grid"><div><p className="eyebrow">Our commitement</p><h2>We recognise that environmental sustainability cannot be achieved without investing in people.</h2><p>Saena Botany seeks to create sustainable livelihoods,restore natural environments and cultivate environmentally conscious communities.</p></div><div><p className="eyebrow">Our vision</p><h2>To be a leading catalyst for environmental transformation and sustainable community development.</h2><p>We see horticulture as a pathway to opportunity, enterprise and sustainable communities.</p></div></div></section><CoreValuesSection /><section className="section"><div className="container split-grid approach-grid"><div className="image-frame"><img src={images.learners} alt="People working with plants in a greenhouse" /></div><div><p className="eyebrow">Our Leadership & Experience</p><h2>Grounded in more than two decades of experience in the horticulture and green industry.</h2><p>The organisation founder and projects manager boast  22 years of industry experience and qualifications in ornamental horticulture and the broader green industry. She brings extensive experience in horticultural training,skill development,industry engagement and youth empowerment.
 </p><break></break><p><b>Key Milestones:</b></p>
     <ul><li>Recipient of the 2019 SouthAfrican Green Industry Council (SAGIC) Certificate of Excellence in Training.</li>
       <li>2024 Earthizens Youth Development and Indigenous Herbs Cultivation category nominee.</li>
@@ -318,12 +330,12 @@ function AboutPage() {
     </ul> </div></div></section><ContactCta /></>;
 }
 
-function TrainingPage() {
-  return <><PageIntro eyebrow="Training & Skills Development" title="Learn the work behind a thriving agricultural future." text="Accredited qualifications, practical facilities and workplace learning for people ready to grow their skills." image={images.learners} /><section className="section"><div className="container split-grid training-overview"><div><p className="eyebrow">A practical foundation</p><h2>Classroom knowledge, hands-on confidence.</h2><p className="lead">Training combines classroom-based theoretical instruction with hands-on practical training.</p><p>Our programmes are designed to connect what learners understand with what they can do, creating a stronger foundation for agricultural work, enterprise and further development.</p></div><div className="accreditation-card"><div className="accreditation-mark"><Check size={20} /></div><p className="eyebrow">Accredited provider</p><h3>AgriSETA-accredited training provider</h3><p>Provider number: <strong>661739743</strong></p><p>Workplace approval by AgriSETA applies to the agricultural training programmes offered.</p></div></div></section><section className="section section-dark" id="qualifications"><div className="container"><SectionHeading eyebrow="Qualifications" title="Three confirmed learning pathways." text="Explore the agricultural qualifications currently included in the Saena Botany training offering." /><div className="qualification-grid">{qualifications.map((qualification) => <div className="qualification-card" key={qualification.id}><span>{qualification.level}</span><h3>{qualification.title}</h3><p>{qualification.id}</p><a href="#/contact">Enquire about this programme <ArrowUpRight size={16} /></a></div>)}</div></div></section><section className="section section-paper"><div className="container split-grid approach-grid"><div><p className="eyebrow">Work Integrated Learning</p><h2>Learning that moves into the workplace.</h2><p>WIL takes place at Saena Botany’s own agricultural facilities and at external workplaces where required. It gives learners a chance to apply their learning in practical settings.</p><p>Our facilities include greenhouses, nurseries and demonstration spaces that support observation, participation and reflection.</p></div><div className="image-frame"><img src={images.greenhouse} alt="Plants growing in a greenhouse" /></div></div></section><section className="section"><div className="container learner-grid"><div><p className="eyebrow">Who can apply</p><h2>A place to start, change direction or go further.</h2><p>Our target learners include school leavers, unemployed youth, aspiring farmers, agricultural entrepreneurs, existing agricultural workers and individuals interested in plant production and sustainable farming.</p></div><div className="entry-card"><h3>Minimum educational requirement</h3><strong>Grade 9</strong><p>Contact us to discuss the programme that best fits your goals and experience.</p><Button href="#/contact">Make a training enquiry</Button></div></div></section><ContactCta /></>;
+function CoreValuesSection() {
+  return <section className="section section-paper"><div className="container"><SectionHeading eyebrow="What guides us" title="Our Core Values" /><div className="core-values-grid">{coreValues.map(({ icon: Icon, title, text }) => <article className="core-value-card" key={title}><div className="core-value-icon"><Icon size={22} /></div><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>;
 }
 
-function ServicesPage() {
-  return <><PageIntro eyebrow="Landscaping services" title="Considered gardens. Practical care." text="Landscaping services for spaces that are designed, planted and maintained with purpose." image={images.landscape} /><section className="section"><div className="container"><SectionHeading eyebrow="Our services" title="One service category, six ways to help your space grow." text="From the first sketch to ongoing care, we bring a thoughtful and practical approach to landscaping." /><div className="service-grid service-grid-wide">{services.map(({ icon: Icon, title, text }) => <div className="service-card" key={title}><Icon size={28} /><h3>{title}</h3><p>{text}</p><a href="#/contact">Enquire about this service <ArrowUpRight size={15} /></a></div>)}</div></div></section><section className="section section-sage"><div className="container split-grid"><div className="image-frame"><img src={images.landscape} alt="Garden sprinkler watering a green lawn" /></div><div><p className="eyebrow">A considered process</p><h2>From vision to living landscape.</h2><p>Every garden has a different rhythm, from the way sunlight moves through a space to how people use it. We shape our landscaping work around those practical details.</p><div className="process-list"><p><span>01</span> Understand the space and the brief</p><p><span>02</span> Plan, prepare and select with care</p><p><span>03</span> Install, establish and maintain</p></div><Button href="#/contact">Discuss your landscape</Button></div></div></section><ContactCta /></>;
+function TrainingPage() {
+  return <><PageIntro eyebrow="Training & Skills Development" title="Learn the work behind a thriving agricultural future." text="Accredited qualifications, practical facilities and workplace learning for people ready to grow their skills." image={images.learners} /><ApproachSection /><section className="section"><div className="container split-grid training-overview"><div><p className="eyebrow">A practical foundation</p><h2>Classroom knowledge, hands-on confidence.</h2><p className="lead">Training combines classroom-based theoretical instruction with hands-on practical training.</p><p>Our programmes are designed to connect what learners understand with what they can do, creating a stronger foundation for agricultural work, enterprise and further development.</p></div><div className="accreditation-card"><div className="accreditation-mark"><Check size={20} /></div><p className="eyebrow">Accredited provider</p><h3>AgriSETA-accredited training provider</h3><p>Provider number: <strong>661739743</strong></p><p>Workplace approval by AgriSETA applies to the agricultural training programmes offered.</p></div></div></section><section className="section section-dark" id="qualifications"><div className="container"><SectionHeading eyebrow="Qualifications" title="Three confirmed learning pathways." text="Explore the agricultural qualifications currently included in the Saena Botany training offering." /><div className="qualification-grid">{qualifications.map((qualification) => <div className="qualification-card" key={qualification.id}><span>{qualification.level}</span><h3>{qualification.title}</h3><p>{qualification.id}</p><a href="#/contact">Enquire about this programme <ArrowUpRight size={16} /></a></div>)}</div></div></section><section className="section section-paper"><div className="container split-grid approach-grid"><div><p className="eyebrow">Work Integrated Learning</p><h2>Learning that moves into the workplace.</h2><p>WIL takes place at Saena Botany’s own agricultural facilities and at external workplaces where required. It gives learners a chance to apply their learning in practical settings.</p><p>Our facilities include greenhouses, nurseries and demonstration spaces that support observation, participation and reflection.</p></div><div className="image-frame"><img src={images.greenhouse} alt="Plants growing in a greenhouse" /></div></div></section><section className="section"><div className="container learner-grid"><div><p className="eyebrow">Who can apply</p><h2>A place to start, change direction or go further.</h2><p>Our target learners include school leavers, unemployed youth, aspiring farmers, agricultural entrepreneurs, existing agricultural workers and individuals interested in plant production and sustainable farming.</p></div><div className="entry-card"><h3>Minimum educational requirement</h3><strong>Grade 9</strong><p>Contact us to discuss the programme that best fits your goals and experience.</p><Button href="#/contact">Make a training enquiry</Button></div></div></section><ContactCta /></>;
 }
 
 function ProjectsPage() {
